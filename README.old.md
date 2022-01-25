@@ -1,2 +1,0 @@
-# testapp
-testing application
