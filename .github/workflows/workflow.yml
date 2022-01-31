@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "say_hello"
-  build:
+  workflow:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -26,10 +26,19 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v1
-      - run: npm install
-      - run: npm run build
+      - uses: actions/checkout@v2
+      - name: Use Node version ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: NPM INSTALL
+      - run: npm ci
+      - name: NPM BUILD
+      - run: npm run build --if-present
+      - name: NPM TEST
       - run: npm test
+      - name: DEPLOY
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
@@ -39,7 +48,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'us-east-1'   # optional: defaults to us-east-1
           SOURCE_DIR: 'build'      # optional: defaults to entire repository
-
+      - name: SLACK Notification
       - uses: ravsamhq/notify-slack-action@v1
         if: always()
         with:
