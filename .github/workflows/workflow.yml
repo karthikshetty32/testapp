@@ -48,8 +48,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'us-east-1'   # optional: defaults to us-east-1
           SOURCE_DIR: 'build'      # optional: defaults to entire repository
-      - name: SLACK Notification
+
       - uses: ravsamhq/notify-slack-action@v1
+      - name: SLACK Notification
         if: always()
         with:
           status: ${{ job.status }}
