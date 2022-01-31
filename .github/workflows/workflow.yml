@@ -22,7 +22,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [15.x]
+        node-version: [16.x]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -32,11 +32,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-     
+      - name: npm install
       - run: npm ci
-    
+      - name: npm build
       - run: npm run build --if-present
-      
+      - name: npm test
       - run: npm test
      
       - uses: jakejarvis/s3-sync-action@master
