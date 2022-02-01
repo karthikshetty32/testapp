@@ -30,10 +30,7 @@ const Sdata = [
     imgsrc: course6,
     title: "Big Data",
   },
-  {
-    imgsrc: course6,
-    title: "EC & CS",
-  },
+  
 ];
 
 export default Sdata;
